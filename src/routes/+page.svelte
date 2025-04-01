@@ -36,7 +36,6 @@
 
   const projects = [
     { name: "JPT Bali E-commerce", url: "https://tokojpt.com" },
-    { name: "ODRPLAT", url: "https://odrp.busan.my.id" },
     { name: "nansql (Golang sqlx lib)", url: "https://github.com/nanwp/nansql" },
     { name: "Real-time Retail Sync", url: "https://medium.com/@nanwp/real-time-retail-data-synchronization-e5e4147d32c2" },
     { name: "Sekolah Penggerak", url: "https://psp-web.pauddikdasmen.kemdikbud.go.id/#/home" }
