@@ -3,35 +3,27 @@
     {
       company: "PT Kreanova Pharmaret (Apotek Roxy)",
       role: "DevOps Engineer",
-      date: "Jan 2025 – Present",
+      date: "Jan 2025 – Jul 2025 (Freelance)",
       description: [
-        "Designed and implemented CI/CD pipelines using GitLab CI.",
-        "Managed GitLab repositories and environments.",
-        "Deployed K3s clusters for high availability.",
-        "Implemented observability with Grafana, Prometheus, and Loki."
+        "Built end-to-end observability stack with Grafana, Prometheus, and Loki, enabling real-time monitoring of performance metrics and centralized log collection.",
+        "Optimized CI/CD pipelines using GitLab CI, reducing deployment time by 60% and enabling faster feature releases.",
+        "Administered GitLab repositories, enforcing branch protection rules, access control, and repository structure to streamline team collaboration and code quality.",
+        "Managed multi-environment servers (development, staging, production), including SSH access setup, load monitoring, and incident troubleshooting, ensuring >99% uptime",
+        "Deployed and maintained K3s clusters to improve application scalability and high availability across services.",
+        "Automated deployment workflows with Docker, Kubernetes (Helm charts, YAML manifests), cutting manual configuration errors and improving release consistency."
       ]
     },
     {
       company: "PT Busanid Techno Asia",
       role: "Backend Developer",
-      date: "Feb 2024 – Mar 2025",
+      date: "Feb 2024 – Jun 2025",
       description: [
-        "Built modular backend architecture with Golang.",
-        "Reduced API response time from 5s to 100ms.",
-        "Implemented real-time sync using Kafka.",
-        "Handled deployments with Docker and GitLab CI."
+        "E-Commerce Platform: Developed backend services in Golang (product catalog, cart, reviews, favorites, payment gateway integration, order queues, and cron schedulers). Designed efficient PostgreSQL queries and materialized views to enhance data retrieval performance.",
+        "ERP System Migration: Refactored Laravel services into Golang, redesigned database queries, and introduced pagination to resolve N+1 query issues, cutting API response time from 5 seconds to 100ms, greatly improving system scalability and user experience.",
+        "Retail Data Synchronization: Built real-time transaction and stock sync across outlets using Apache Kafka; developed monitoring dashboard with Next.js and deployed per-outlet microservices with Docker.",
+        "POS System: Delivered APIs for transactions, stock, and customer management, including PDF generation, email notifications, and rollback-safe data sync services."
       ]
     },
-    {
-      company: "PT Hayat Teknologi Informatika",
-      role: "Server Administrator",
-      date: "Aug 2020 – Feb 2023",
-      description: [
-        "Managed mail and DNS servers.",
-        "Led server migrations.",
-        "Implemented network monitoring with Cacti."
-      ]
-    }
   ];
 
   const projects = [
