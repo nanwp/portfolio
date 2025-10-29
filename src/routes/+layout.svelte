@@ -10,6 +10,7 @@
       <a href="/" class="text-lg font-semibold tracking-tight">Nanda Wijaya Putra</a>
       <div class="hidden sm:flex gap-4 text-sm text-gray-300">
         <a href="#about">About</a>
+        <a href="#education">Education</a>
         <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>

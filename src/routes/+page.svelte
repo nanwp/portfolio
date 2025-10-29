@@ -91,6 +91,43 @@
   </div>
 </section>
 
+<section id="education" class="py-8">
+  <div class="card p-6">
+    <h2 class="section-title">Education</h2>
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+      <div>
+        <h3 class="text-xl font-semibold">Institut Pertanian Bogor</h3>
+        <p class="text-gray-400">Bogor</p>
+      </div>
+      <p class="text-sm text-gray-400">Aug 2021 – Jun 2025</p>
+    </div>
+    <p class="mt-3 text-gray-300">Bachelor of Teknologi Rekayasa Perangkat Lunak</p>
+    <div class="mt-2 flex flex-wrap gap-2">
+      <span class="badge">GPA 3.43/4.00</span>
+      <span class="badge">Top 10 Finalist Hackfest (GDSC Indonesia)</span>
+    </div>
+    <p class="mt-3 text-gray-300">
+      Thesis: Comprehensive Observability Integration Using Logs, Metrics, and Tracing to Enhance Reliability and Scalability of Backend Systems
+    </p>
+
+    <!-- SMK Entry -->
+    <div class="mt-6 border-t border-white/10 pt-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div>
+          <h3 class="text-xl font-semibold">SMKN 2 Kota Bekasi</h3>
+          <p class="text-gray-400">Bekasi</p>
+        </div>
+        <p class="text-sm text-gray-400">Aug 2019 – Jun 2021</p>
+      </div>
+      <p class="mt-3 text-gray-300">Vocational High School</p>
+      
+      <div class="mt-2 flex flex-wrap gap-2">
+        <span class="badge">Juara 1 Konfigurasi Mikrotik (Kota Bekasi) ±50 peserta</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="tech" class="py-8">
   <div class="card p-6">
     <h2 class="text-2xl font-semibold mb-4">Tech Stack</h2>
