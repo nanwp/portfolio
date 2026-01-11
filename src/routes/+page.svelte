@@ -76,7 +76,6 @@
   </p>
   <div class="mt-6 flex items-center justify-center gap-3">
     <a href="#projects" class="btn-primary">View Projects</a>
-    <a href="/resume.pdf" class="btn-outline">Download Resume</a>
   </div>
 </section>
 
@@ -223,6 +222,5 @@
 <div id="contact" class="text-center py-10">
   <div class="flex justify-center gap-3">
     <a href="mailto:nanwp.dev@gmail.com" class="btn-primary">Contact Me</a>
-    <a href="/resume.pdf" class="btn-outline">Download Resume</a>
   </div>
 </div>
