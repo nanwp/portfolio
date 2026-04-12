@@ -1,0 +1,54 @@
+[
+	{
+		"company": "PT Semesta Integrasi Digital (sekolah.mu)",
+		"role": "Software Engineer Backend",
+		"date": "Jan 2026 – Present",
+		"location": "Jakarta, Indonesia",
+		"description": [
+			"Engineered core payment and billing services for a high-traffic EdTech platform, facilitating seamless user transactions for learning packages, voucher campaigns, and billing management within a specialized Payment-Finance squad.",
+			"Maintained and scaled 10 distinct microservices within the Payment-Finance domain, ensuring seamless cross-squad data synchronization using Golang, gRPC, and asynchronous event-driven architectures (NATS, AsyncQueue).",
+			"Integrated multiple third-party payment gateways and managed distributed databases (PostgreSQL, MongoDB, Redis, Elasticsearch) to guarantee secure, high-speed, and reliable transaction processing.",
+			"Spearheaded a proactive observability initiative by designing and implementing team-specific Grafana monitoring dashboards, successfully accelerating issue resolution by detecting hidden NATS worker failures and process spikes before they impacted production."
+		],
+		"tags": ["Golang", "gRPC", "NATS", "PostgreSQL", "MongoDB", "Redis"]
+	},
+	{
+		"company": "PT Semesta Integrasi Digital (sekolah.mu)",
+		"role": "Software Engineer (Freelance)",
+		"date": "Sep 2025 – Dec 2025",
+		"location": "Jakarta, Indonesia",
+		"description": [
+			"Accelerated the student transfer process by over 95% (from 2-3 days to 1-2 hours) by leading the end-to-end development of a full-stack financial tracking system (Golang, Vue.js).",
+			"Automated complex financial cross-checking and revenue calculations, enabling the system to instantly evaluate utilized versus forfeited funds and price adjustments across branches.",
+			"Streamlined cross-departmental workflows between Operations and Finance by delivering a unified platform that simplified data verification and enabled one-click financial approvals.",
+			"Ensured strict data consistency and financial auditability by engineering robust Golang RESTful APIs with strict access controls, preventing unauthorized data modifications."
+		],
+		"tags": ["Golang", "Vue.js", "REST API", "PostgreSQL"]
+	},
+	{
+		"company": "PT Kreanova Pharmaret (Apotek Roxy)",
+		"role": "DevSecOps (Freelance)",
+		"date": "Jan 2025 – Sep 2025",
+		"location": "Jakarta, Indonesia",
+		"description": [
+			"Spearheaded the infrastructure design for a newly launched customer-facing e-commerce platform by implementing a highly available and scalable AWS cloud architecture (ECS, EC2, RDS, ALB).",
+			"Architected a comprehensive end-to-end observability stack (Grafana, Prometheus, Loki) for real-time traffic monitoring and rapid anomaly detection, ensuring high availability and system reliability.",
+			"Enabled dynamic auto-scaling to handle e-commerce traffic spikes by automating deployment workflows of microservices using Kubernetes (Helm charts, YAML manifests) and Docker.",
+			"Accelerated feature time-to-market by optimizing CI/CD pipelines using GitLab CI, reducing deployment time by 60% and enabling rapid, continuous releases."
+		],
+		"tags": ["AWS", "Kubernetes", "Docker", "Grafana", "CI/CD"]
+	},
+	{
+		"company": "PT Busanid Techno Asia",
+		"role": "Backend Developer",
+		"date": "Jan 2024 – Jun 2025",
+		"location": "Jakarta, Indonesia",
+		"description": [
+			"E-Commerce Platform: Developed backend services in Golang and designed efficient PostgreSQL queries to enhance data retrieval performance. Instrumented core microservices using OpenTelemetry for end-to-end distributed tracing.",
+			"ERP System Migration: Refactored Laravel services into Golang to resolve N+1 query issues, cutting API response time from 5 seconds to 100ms, greatly improving system scalability.",
+			"Retail Data Synchronization: Built real-time transaction and stock sync across outlets using Apache Kafka, and deployed per-outlet microservices with Docker.",
+			"Search Engine & POS: Implemented Algolia integration for fast product search, and delivered APIs for transactions, stock, and customer management (including PDF generation and email notifications)."
+		],
+		"tags": ["Golang", "Kafka", "Docker", "OpenTelemetry", "PostgreSQL"]
+	}
+]

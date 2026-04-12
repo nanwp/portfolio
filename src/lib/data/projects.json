@@ -1,0 +1,18 @@
+[
+	{
+		"name": "nansql",
+		"subtitle": "Golang sqlx library",
+		"url": "https://github.com/nanwp/nansql",
+		"description": "A lightweight and ergonomic wrapper around sqlx for Go, providing cleaner query building and result scanning with minimal boilerplate.",
+		"tags": ["Golang", "SQL", "Open Source"],
+		"featured": true
+	},
+	{
+		"name": "Real-time Retail Sync",
+		"subtitle": "Event-driven data pipeline",
+		"url": "https://medium.com/@nanwp/real-time-retail-data-synchronization-e5e4147d32c2",
+		"description": "Built a real-time transaction and stock synchronization system across multiple retail outlets using Apache Kafka and per-outlet microservices.",
+		"tags": ["Golang", "Kafka", "Docker", "Microservices"],
+		"featured": true
+	}
+]
