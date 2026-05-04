@@ -139,7 +139,7 @@
 </section>
 
 <!-- ═══ STATS ═══ -->
-<section class="py-8">
+<!-- <section class="py-8">
 	<div class="container mx-auto px-6">
 		<ScrollReveal>
 			<div class="grid grid-cols-2 md:grid-cols-4 gap-4 reveal-stagger">
@@ -153,7 +153,7 @@
 			</div>
 		</ScrollReveal>
 	</div>
-</section>
+</section> -->
 
 <!-- ═══ TECH STACK ═══ -->
 <section id="tech" class="py-16">
