@@ -1,99 +1,71 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import { ui } from '$lib/stores/ui.svelte';
 
-	let mobileOpen = $state(false);
-
-	const navLinks = [
-		{ href: '/', label: 'Home' },
-		{ href: '/#about', label: 'About' },
-		{ href: '/#experience', label: 'Experience' },
-		{ href: '/#projects', label: 'Projects' },
-		{ href: '/blog', label: 'Blog' },
+	const links = [
+		{ href: '/#architecture', label: 'Architecture' },
+		{ href: '/#work', label: 'Work' },
+		{ href: '/#telemetry', label: 'Telemetry' },
+		{ href: '/#contact', label: 'Contact' }
 	];
 
-	function closeMobile() {
-		mobileOpen = false;
-	}
-
-	function isActive(href: string): boolean {
-		const path = $page.url.pathname;
-		if (href === '/') return path === '/';
-		if (href.startsWith('/#')) return path === '/';
-		return path.startsWith(href);
-	}
+	let scrolled = $state(false);
 </script>
 
-<header
-	class="sticky top-0 z-50 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/[0.06]"
->
-	<nav class="container mx-auto px-6 py-4 flex items-center justify-between">
-		<a
-			href="/"
-			class="text-lg font-bold tracking-tight text-slate-900 no-underline hover:text-slate-900 dark:text-white dark:hover:text-white group flex items-center gap-2"
-		>
-			<span
-				class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-indigo-500/20"
-				>N</span
+<svelte:window onscroll={() => (scrolled = window.scrollY > 24)} />
+
+<header class="fixed inset-x-0 top-3 z-50 flex justify-center px-4 sm:top-4">
+	<nav
+		class="flex w-full max-w-4xl items-center justify-between gap-2 rounded-full border border-white/[0.08] py-1.5 pl-4 pr-1.5 backdrop-blur-md transition-colors duration-300 {scrolled
+			? 'bg-[#0b0b0f]/80'
+			: 'bg-[#0b0b0f]/40'}"
+		aria-label="Primary"
+	>
+		<a href="/" class="flex min-w-0 items-center gap-2.5 text-white no-underline hover:text-white">
+			<span class="mono text-sm font-semibold tracking-tight"
+				>nanwp<span class="text-cyan-glow">.</span>com</span
 			>
-			<span class="hidden sm:inline">Nanda Wijaya Putra<span class="text-indigo-600 dark:text-indigo-400">.</span></span>
+			<span class="hidden items-center gap-1.5 border-l border-white/10 pl-2.5 lg:flex">
+				<span class="status-dot"></span>
+				<span class="mono whitespace-nowrap text-[10.5px] text-ink-muted"
+					>System Operational • 99.99%</span
+				>
+			</span>
 		</a>
 
-		<div class="hidden md:flex items-center gap-1">
-			{#each navLinks as link}
+		<div class="flex items-center gap-0.5">
+			{#each links as link}
 				<a
 					href={link.href}
-					class="px-3 py-2 rounded-lg text-sm font-medium no-underline transition-all duration-200
-						{isActive(link.href)
-							? 'text-slate-900 bg-slate-100 dark:text-white dark:bg-white/[0.08]'
-							: 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/[0.05]'}"
+					class="hidden rounded-full px-3 py-1.5 text-[13px] font-medium text-ink-muted no-underline transition-colors hover:bg-white/[0.05] hover:text-white md:block"
 				>
 					{link.label}
 				</a>
 			{/each}
-		</div>
-
-		<div class="flex items-center gap-2 sm:gap-3">
-			<ThemeToggle />
+			<a
+				href="/Nanda_Wijaya_Putra_CV.pdf"
+				download
+				class="ml-1 hidden rounded-full border border-cyan-glow/30 bg-cyan-glow/[0.06] px-3 py-1.5 text-[12px] font-medium text-cyan-200 no-underline transition-colors hover:border-cyan-glow/60 hover:text-white sm:block"
+			>
+				Resume ↓
+			</a>
 			<button
 				type="button"
-				onclick={() => (mobileOpen = !mobileOpen)}
-				class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 transition-colors text-slate-600 dark:text-gray-300"
-				aria-label="Toggle menu"
+				onclick={() => (ui.paletteOpen = true)}
+				class="ml-1 flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] text-ink-muted transition-colors hover:border-white/20 hover:text-white"
+				aria-label="Open command palette"
 			>
-				{#if mobileOpen}
-					<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-					</svg>
-				{:else}
-					<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-					</svg>
-				{/if}
+				<svg
+					class="h-3.5 w-3.5"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<path d="m4 17 6-6-6-6M12 19h8" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+				<span class="mono hidden sm:inline">⌘K</span>
+				<span class="mono sm:hidden">menu</span>
 			</button>
 		</div>
 	</nav>
-
-	<div class="gradient-line"></div>
-
-	{#if mobileOpen}
-		<div
-			class="md:hidden border-t border-slate-200/80 dark:border-white/[0.06] bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl"
-		>
-			<div class="container mx-auto px-6 py-4 flex flex-col gap-1">
-				{#each navLinks as link}
-					<a
-						href={link.href}
-						onclick={closeMobile}
-						class="px-4 py-3 rounded-lg text-sm font-medium no-underline transition-all duration-200
-							{isActive(link.href)
-								? 'text-slate-900 bg-slate-100 dark:text-white dark:bg-white/[0.08]'
-								: 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/[0.05]'}"
-					>
-						{link.label}
-					</a>
-				{/each}
-			</div>
-		</div>
-	{/if}
 </header>

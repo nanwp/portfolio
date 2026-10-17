@@ -2,12 +2,12 @@
 	import '../app.css';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-	import BackToTop from '$lib/components/BackToTop.svelte';
+	import CommandPalette from '$lib/components/CommandPalette.svelte';
 
 	let { children } = $props();
 </script>
 
-<div class="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0f172a]">
+<div class="flex min-h-screen flex-col">
 	<Navbar />
 
 	<main class="flex-1">
@@ -15,5 +15,5 @@
 	</main>
 
 	<Footer />
-	<BackToTop />
+	<CommandPalette />
 </div>

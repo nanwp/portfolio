@@ -1,10 +1,14 @@
 <script lang="ts">
-	let { experience, isLast = false }: {
+	let {
+		experience,
+		isLast = false
+	}: {
 		experience: {
 			company: string;
 			role: string;
 			date: string;
 			location: string;
+			context?: string;
 			description: string[];
 			tags: string[];
 		};
@@ -12,45 +16,64 @@
 	} = $props();
 
 	let expanded = $state(false);
-	const previewCount = 2;
+	const previewCount = 3;
+
+	// Numbers are what recruiters scan for: "95%", "5s to 100ms", "10 payment … microservices".
+	const METRIC =
+		/(\d+(?:–\d+)?\s?(?:%|ms\b|s\b|days|hours)(?: to \d+(?:–\d+)?\s?(?:ms\b|s\b|hours))?|\b\d+ (?:payment|peer)\b[^,;(]*)/;
+	const segments = (text: string) => text.split(METRIC);
 </script>
 
-<div class="relative pl-8 pb-8 {isLast ? '' : 'border-l border-slate-200 dark:border-white/[0.08]'} ml-3">
+<div class="relative pl-8 pb-8 {isLast ? '' : 'border-l border-white/[0.08]'} ml-3">
 	<!-- Timeline dot -->
-	<div class="absolute -left-[7px] top-1 w-3.5 h-3.5 rounded-full bg-indigo-500 border-[3px] border-white dark:border-[#0f172a] z-10">
+	<div
+		class="absolute -left-[7px] top-1 w-3.5 h-3.5 rounded-full bg-cyan-glow border-[3px] border-obsidian z-10"
+	>
 		{#if !isLast}
-			<div class="absolute inset-0 rounded-full bg-indigo-400/40 animate-ping" style="animation-duration: 3s;"></div>
+			<div
+				class="absolute inset-0 rounded-full bg-cyan-glow/30 animate-ping motion-reduce:hidden"
+				style="animation-duration: 3s;"
+			></div>
 		{/if}
 	</div>
 
-	<div class="glass-card p-5 ml-4">
+	<div class="panel p-5 ml-4">
 		<div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-3">
 			<div>
-				<h3 class="text-base font-semibold text-slate-900 dark:text-white">{experience.role}</h3>
-				<p class="text-sm text-indigo-600 dark:text-indigo-400">{experience.company}</p>
+				<h3 class="text-base font-semibold text-white">{experience.role}</h3>
+				<p class="mono text-xs text-cyan-glow/80 mt-0.5">{experience.company}</p>
+				{#if experience.context}
+					<p class="mt-1 text-xs italic text-ink-faint">{experience.context}</p>
+				{/if}
 			</div>
-			<div class="flex items-center gap-2 text-xs text-slate-500 dark:text-gray-500 shrink-0">
+			<div class="flex items-center gap-2 mono text-[11px] text-ink-faint shrink-0">
 				<span>{experience.date}</span>
 				<span class="hidden sm:inline">&middot;</span>
 				<span class="hidden sm:inline">{experience.location}</span>
 			</div>
 		</div>
 
-		<ul class="space-y-2 text-sm text-slate-600 dark:text-gray-400 leading-relaxed">
+		<ul class="space-y-2 text-sm text-ink-muted leading-relaxed">
 			{#each expanded ? experience.description : experience.description.slice(0, previewCount) as item}
 				<li class="flex gap-2">
-					<span class="text-indigo-400/60 mt-1.5 shrink-0">
-						<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3"/></svg>
+					<span class="text-cyan-glow/50 mt-1.5 shrink-0">
+						<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 8 8"
+							><circle cx="4" cy="4" r="3" /></svg
+						>
 					</span>
-					<span>{item}</span>
+					<span>
+						{#each segments(item) as seg, i}
+							{#if i % 2}<strong class="font-medium text-white">{seg}</strong>{:else}{seg}{/if}
+						{/each}
+					</span>
 				</li>
 			{/each}
 		</ul>
 
 		{#if experience.description.length > previewCount}
 			<button
-				onclick={() => expanded = !expanded}
-				class="mt-3 text-xs text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors cursor-pointer"
+				onclick={() => (expanded = !expanded)}
+				class="mt-3 text-xs mono text-ink-faint hover:text-white transition-colors cursor-pointer"
 			>
 				{expanded ? 'Show less' : `Show ${experience.description.length - previewCount} more...`}
 			</button>
@@ -58,7 +81,7 @@
 
 		<div class="mt-3 flex flex-wrap gap-1.5">
 			{#each experience.tags as tag}
-				<span class="badge text-[10px] px-2 py-0.5">{tag}</span>
+				<span class="tag">{tag}</span>
 			{/each}
 		</div>
 	</div>

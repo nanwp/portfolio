@@ -1,54 +1,56 @@
 [
 	{
-		"company": "PT Semesta Integrasi Digital (sekolah.mu)",
-		"role": "Software Engineer Backend",
+		"company": "Sekolah.mu (PT Semesta Integrasi Digital)",
+		"role": "Software Engineer, Backend",
 		"date": "Jan 2026 – Present",
 		"location": "Jakarta, Indonesia",
+		"context": "Leading Indonesian EdTech platform, nationwide blended-learning programs.",
 		"description": [
-			"Engineered core payment and billing services for a high-traffic EdTech platform, facilitating seamless user transactions for learning packages, voucher campaigns, and billing management within a specialized Payment-Finance squad.",
-			"Maintained and scaled 10 distinct microservices within the Payment-Finance domain, ensuring seamless cross-squad data synchronization using Golang, gRPC, and asynchronous event-driven architectures (NATS, AsyncQueue).",
-			"Integrated multiple third-party payment gateways and managed distributed databases (PostgreSQL, MongoDB, Redis, Elasticsearch) to guarantee secure, high-speed, and reliable transaction processing.",
-			"Spearheaded a proactive observability initiative by designing and implementing team-specific Grafana monitoring dashboards, successfully accelerating issue resolution by detecting hidden NATS worker failures and process spikes before they impacted production."
+			"Own 10 payment and billing microservices (Go, gRPC) powering learning-package purchases, voucher campaigns, and billing; designed idempotent payment handlers and event-driven workflows (NATS, AsyncQueue) to keep transactions consistent across squads.",
+			"Resolved user-impacting on-call incidents — failed payment-request creation, missing price data, and discount-calculation bugs — isolating root cause through logs, metrics, and traces, then shipping fixes with regression tests.",
+			"Drove observability adoption across the Payment-Finance domain by designing team-specific Grafana dashboards and alerting, surfacing silent NATS worker failures and process spikes before they reached production.",
+			"Integrated multiple third-party payment gateways and operated distributed data stores (PostgreSQL, MongoDB, Redis, Elasticsearch) for secure, high-throughput transaction processing.",
+			"Sustain 100% unit-test coverage on owned services and review merge requests for 3 peer engineers, spreading payment-domain knowledge across the squad."
 		],
-		"tags": ["Golang", "gRPC", "NATS", "PostgreSQL", "MongoDB", "Redis"]
+		"tags": ["Go", "gRPC", "NATS", "PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "Grafana"]
 	},
 	{
-		"company": "PT Semesta Integrasi Digital (sekolah.mu)",
+		"company": "Sekolah.mu (PT Semesta Integrasi Digital)",
 		"role": "Software Engineer (Freelance)",
 		"date": "Sep 2025 – Dec 2025",
 		"location": "Jakarta, Indonesia",
+		"context": "Digitalizing financial logistics for core operations.",
 		"description": [
-			"Accelerated the student transfer process by over 95% (from 2-3 days to 1-2 hours) by leading the end-to-end development of a full-stack financial tracking system (Golang, Vue.js).",
-			"Automated complex financial cross-checking and revenue calculations, enabling the system to instantly evaluate utilized versus forfeited funds and price adjustments across branches.",
-			"Streamlined cross-departmental workflows between Operations and Finance by delivering a unified platform that simplified data verification and enabled one-click financial approvals.",
-			"Ensured strict data consistency and financial auditability by engineering robust Golang RESTful APIs with strict access controls, preventing unauthorized data modifications."
+			"Accelerated the student transfer process by over 95% (2–3 days to 1–2 hours) by leading end-to-end development of a full-stack financial tracking system (Go, Vue.js) supporting the company's flexible-location policy.",
+			"Automated financial cross-checking and revenue calculation, instantly evaluating utilized versus forfeited funds and price adjustments across branches, eliminating error-prone manual validation.",
+			"Engineered Go REST APIs with strict access control and 100% unit-test coverage for financial auditability, unifying Operations and Finance onto one platform with one-click approvals."
 		],
-		"tags": ["Golang", "Vue.js", "REST API", "PostgreSQL"]
+		"tags": ["Go", "Vue.js", "REST API", "PostgreSQL"]
 	},
 	{
-		"company": "PT Kreanova Pharmaret (Apotek Roxy)",
-		"role": "DevSecOps (Freelance)",
+		"company": "Apotek Roxy (PT Kreanova Pharmaret)",
+		"role": "DevSecOps Engineer (Freelance)",
 		"date": "Jan 2025 – Sep 2025",
 		"location": "Jakarta, Indonesia",
+		"context": "Pharmaceutical retail chain launching its first e-commerce channel.",
 		"description": [
-			"Spearheaded the infrastructure design for a newly launched customer-facing e-commerce platform by implementing a highly available and scalable AWS cloud architecture (ECS, EC2, RDS, ALB).",
-			"Architected a comprehensive end-to-end observability stack (Grafana, Prometheus, Loki) for real-time traffic monitoring and rapid anomaly detection, ensuring high availability and system reliability.",
-			"Enabled dynamic auto-scaling to handle e-commerce traffic spikes by automating deployment workflows of microservices using Kubernetes (Helm charts, YAML manifests) and Docker.",
-			"Accelerated feature time-to-market by optimizing CI/CD pipelines using GitLab CI, reducing deployment time by 60% and enabling rapid, continuous releases."
+			"Designed and implemented a highly available, scalable AWS architecture (ECS, EC2, RDS, ALB) for a new customer-facing e-commerce platform, driving the company's retail digitalization.",
+			"Architected an end-to-end observability stack (Grafana, Prometheus, Loki) for real-time traffic monitoring and anomaly detection on retail transactions.",
+			"Automated microservice deployments with Kubernetes (Helm) and Docker for dynamic auto-scaling under traffic spikes, and cut deployment time 60% via GitLab CI."
 		],
-		"tags": ["AWS", "Kubernetes", "Docker", "Grafana", "CI/CD"]
+		"tags": ["AWS", "Kubernetes", "Helm", "Docker", "Grafana", "GitLab CI"]
 	},
 	{
 		"company": "PT Busanid Techno Asia",
 		"role": "Backend Developer",
 		"date": "Jan 2024 – Jun 2025",
 		"location": "Jakarta, Indonesia",
+		"context": "IT consulting firm delivering scalable solutions for Indonesian enterprises.",
 		"description": [
-			"E-Commerce Platform: Developed backend services in Golang and designed efficient PostgreSQL queries to enhance data retrieval performance. Instrumented core microservices using OpenTelemetry for end-to-end distributed tracing.",
-			"ERP System Migration: Refactored Laravel services into Golang to resolve N+1 query issues, cutting API response time from 5 seconds to 100ms, greatly improving system scalability.",
-			"Retail Data Synchronization: Built real-time transaction and stock sync across outlets using Apache Kafka, and deployed per-outlet microservices with Docker.",
-			"Search Engine & POS: Implemented Algolia integration for fast product search, and delivered APIs for transactions, stock, and customer management (including PDF generation and email notifications)."
+			"ERP System Migration: Refactored Laravel services into Go and eliminated N+1 query patterns, cutting API response time from 5s to 100ms.",
+			"E-Commerce Platform: Built Go backend services with tuned PostgreSQL queries and instrumented core microservices with OpenTelemetry for distributed tracing.",
+			"Retail Data Synchronization: Built real-time transaction and stock sync across outlets using Apache Kafka, deploying per-outlet microservices with Docker."
 		],
-		"tags": ["Golang", "Kafka", "Docker", "OpenTelemetry", "PostgreSQL"]
+		"tags": ["Go", "Kafka", "Docker", "OpenTelemetry", "PostgreSQL"]
 	}
 ]

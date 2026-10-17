@@ -37,11 +37,16 @@
 
 <svelte:head>
 	<title>Blog — Nanda Wijaya Putra</title>
-	<meta name="description" content="Writings on software engineering, backend development, and cloud architecture." />
+	<meta
+		name="description"
+		content="Writings on software engineering, backend development, and cloud architecture."
+	/>
 </svelte:head>
 
 <section class="relative overflow-hidden">
-	<div class="absolute inset-0 bg-gradient-to-b from-violet-500/10 via-transparent to-transparent dark:from-violet-500/[0.05] pointer-events-none"></div>
+	<div
+		class="absolute inset-0 bg-gradient-to-b from-violet-500/10 via-transparent to-transparent dark:from-violet-500/[0.05] pointer-events-none"
+	></div>
 
 	<div class="container mx-auto px-6 pt-20 pb-12 relative">
 		<ScrollReveal>
@@ -58,8 +63,18 @@
 		<ScrollReveal>
 			<div class="max-w-2xl mx-auto mb-10">
 				<div class="relative">
-					<svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+					<svg
+						class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-gray-500"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+						/>
 					</svg>
 					<input
 						type="text"
@@ -80,7 +95,9 @@
 				<button
 					type="button"
 					onclick={() => setTag('')}
-					class="badge cursor-pointer transition-all duration-200 {!activeTag ? 'bg-indigo-100 text-indigo-800 ring-indigo-200 dark:bg-indigo-500/20 dark:text-indigo-300 dark:ring-indigo-400/30' : 'hover:bg-slate-100 dark:hover:bg-white/10'}"
+					class="badge cursor-pointer transition-all duration-200 {!activeTag
+						? 'bg-indigo-100 text-indigo-800 ring-indigo-200 dark:bg-indigo-500/20 dark:text-indigo-300 dark:ring-indigo-400/30'
+						: 'hover:bg-slate-100 dark:hover:bg-white/10'}"
 				>
 					All
 				</button>
@@ -88,7 +105,9 @@
 					<button
 						type="button"
 						onclick={() => toggleTag(tag)}
-						class="badge cursor-pointer transition-all duration-200 {activeTag === tag ? 'bg-indigo-100 text-indigo-800 ring-indigo-200 dark:bg-indigo-500/20 dark:text-indigo-300 dark:ring-indigo-400/30' : 'hover:bg-slate-100 dark:hover:bg-white/10'}"
+						class="badge cursor-pointer transition-all duration-200 {activeTag === tag
+							? 'bg-indigo-100 text-indigo-800 ring-indigo-200 dark:bg-indigo-500/20 dark:text-indigo-300 dark:ring-indigo-400/30'
+							: 'hover:bg-slate-100 dark:hover:bg-white/10'}"
 					>
 						{tag}
 					</button>
@@ -99,7 +118,14 @@
 		{#if filtered.length === 0}
 			<div class="text-center py-20">
 				<p class="text-slate-600 dark:text-gray-500 text-lg">No articles found.</p>
-				<button type="button" onclick={() => { search = ''; setTag(''); }} class="btn-ghost text-sm mt-4">
+				<button
+					type="button"
+					onclick={() => {
+						search = '';
+						setTag('');
+					}}
+					class="btn-ghost text-sm mt-4"
+				>
 					Clear filters
 				</button>
 			</div>

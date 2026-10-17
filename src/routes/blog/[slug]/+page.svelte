@@ -35,14 +35,23 @@
 </svelte:head>
 
 <article class="relative">
-	<div class="absolute inset-0 bg-gradient-to-b from-indigo-500/8 via-transparent to-transparent dark:from-indigo-500/[0.04] pointer-events-none h-[400px]"></div>
+	<div
+		class="absolute inset-0 bg-gradient-to-b from-indigo-500/8 via-transparent to-transparent dark:from-indigo-500/[0.04] pointer-events-none h-[400px]"
+	></div>
 
 	<div class="container mx-auto px-6 pt-16 pb-20 relative">
 		<!-- Back link -->
 		<ScrollReveal>
-			<a href="/blog" class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 dark:text-gray-500 dark:hover:text-gray-300 no-underline mb-10">
+			<a
+				href="/blog"
+				class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-800 dark:text-gray-500 dark:hover:text-gray-300 no-underline mb-10"
+			>
 				<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+					/>
 				</svg>
 				Back to blog
 			</a>
@@ -57,13 +66,19 @@
 					{/each}
 				</div>
 
-				<h1 class="text-3xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
+				<h1
+					class="text-3xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-6"
+				>
 					{blog.title}
 				</h1>
 
 				<div class="flex items-center gap-4 text-sm text-slate-500 dark:text-gray-500">
 					<div class="flex items-center gap-2">
-						<div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-xs font-bold text-white">N</div>
+						<div
+							class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-xs font-bold text-white"
+						>
+							N
+						</div>
 						<span class="text-slate-700 dark:text-gray-400">Nanda Wijaya Putra</span>
 					</div>
 					<span>&middot;</span>
@@ -89,18 +104,38 @@
 				<div class="flex items-center justify-between">
 					<div class="flex flex-wrap gap-2">
 						{#each blog.tags as tag}
-							<a href="/blog?tag={tag}" class="badge text-[10px] no-underline hover:bg-slate-100 dark:hover:bg-white/10">{tag}</a>
+							<a
+								href="/blog?tag={tag}"
+								class="badge text-[10px] no-underline hover:bg-slate-100 dark:hover:bg-white/10"
+								>{tag}</a
+							>
 						{/each}
 					</div>
 					<button type="button" onclick={copyLink} class="btn-ghost text-xs cursor-pointer">
 						{#if copied}
-							<svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<svg
+								class="w-4 h-4 text-emerald-600 dark:text-emerald-400"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="2"
+							>
 								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
 							</svg>
 							Copied!
 						{:else}
-							<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-4.758a4.5 4.5 0 00-1.242-7.244l-4.5-4.5a4.5 4.5 0 00-6.364 6.364L4.5 8.688" />
+							<svg
+								class="w-4 h-4"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-4.758a4.5 4.5 0 00-1.242-7.244l-4.5-4.5a4.5 4.5 0 00-6.364 6.364L4.5 8.688"
+								/>
 							</svg>
 							Copy link
 						{/if}
