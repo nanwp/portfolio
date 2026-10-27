@@ -53,7 +53,7 @@ export const STAGES: Record<StageName, SceneState> = {
 		explode: 1,
 		telemetry: 0,
 		shift: 0.22,
-		dim: 0.35
+		dim: 0.18
 	},
 	telemetry: {
 		camX: -8,
@@ -162,8 +162,13 @@ interface ServiceNode {
 
 interface Slab {
 	mesh: THREE.Group;
+	body: THREE.MeshStandardMaterial;
+	edge: THREE.LineBasicMaterial;
+	radius: number;
 	compactY: number;
 	explodedY: number;
+	/** 0..1 eased highlight from setLayer() */
+	focus: number;
 }
 
 interface Packet {
@@ -206,6 +211,11 @@ export class NetworkScene {
 	private frameTimes: number[] = [];
 	private lastStateKey = '';
 	private focusIndex: number | null = null;
+	private layerIndex: number | null = null;
+	private labels: HTMLElement[] = [];
+	private occluders: Element[] = [];
+	private tmp = new THREE.Vector3();
+	private camRight = new THREE.Vector3();
 	private readonly reducedMotion: boolean;
 	private readonly quality: 'high' | 'low';
 
@@ -233,14 +243,17 @@ export class NetworkScene {
 		const pmrem = new THREE.PMREMGenerator(this.renderer);
 		const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 		this.scene.environment = env;
-		this.scene.environmentIntensity = 0.35;
+		this.scene.environmentIntensity = 0.6;
 		this.scene.fog = new THREE.FogExp2(0x070709, 0.028);
 		this.disposables.push(env, pmrem);
 
-		this.scene.add(new THREE.AmbientLight(0xffffff, 0.25));
-		const key = new THREE.DirectionalLight(0xffffff, 1.4);
+		this.scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+		const key = new THREE.DirectionalLight(0xffffff, 1.6);
 		key.position.set(6, 10, 8);
-		this.scene.add(key);
+		// cyan rim from behind so dark metal reads as a silhouette against the near-black page
+		const rim = new THREE.DirectionalLight(CYAN, 2.4);
+		rim.position.set(-8, 5, -12);
+		this.scene.add(key, rim);
 		const coreLight = new THREE.PointLight(CYAN, 18, 14, 1.6);
 		this.core.add(coreLight);
 
@@ -266,21 +279,31 @@ export class NetworkScene {
 			const r = 1.75 - i * 0.18;
 			const geo = new THREE.CylinderGeometry(r, r, 0.2, 8, 1);
 			const mat = new THREE.MeshStandardMaterial({
-				color: 0x15161c,
-				metalness: 0.92,
-				roughness: 0.32
+				color: 0x1c1e26,
+				metalness: 0.9,
+				roughness: 0.3,
+				emissive: accents[i],
+				emissiveIntensity: 0
 			});
 			const edges = new THREE.EdgesGeometry(geo);
 			const edgeMat = new THREE.LineBasicMaterial({
 				color: accents[i],
 				transparent: true,
-				opacity: 0.55
+				opacity: 0.8
 			});
 			const group = new THREE.Group();
 			group.add(new THREE.Mesh(geo, mat), new THREE.LineSegments(edges, edgeMat));
 			group.rotation.y = (i * Math.PI) / 8;
 			this.core.add(group);
-			this.slabs.push({ mesh: group, compactY: (i - 1.5) * 0.3, explodedY: (i - 1.5) * 1.35 });
+			this.slabs.push({
+				mesh: group,
+				body: mat,
+				edge: edgeMat,
+				radius: r,
+				compactY: (i - 1.5) * 0.3,
+				explodedY: (i - 1.5) * 1.35,
+				focus: 0
+			});
 			this.disposables.push(geo, mat, edges, edgeMat);
 		}
 	}
@@ -295,14 +318,14 @@ export class NetworkScene {
 		];
 		const edgeGeos = geos.map((g) => new THREE.EdgesGeometry(g));
 		const bodyMat = new THREE.MeshStandardMaterial({
-			color: 0x1b1c23,
+			color: 0x23252e,
 			metalness: 0.95,
 			roughness: 0.28
 		});
 		const edgeMat = new THREE.LineBasicMaterial({
 			color: 0xffffff,
 			transparent: true,
-			opacity: 0.16
+			opacity: 0.3
 		});
 		this.disposables.push(...geos, ...edgeGeos, bodyMat, edgeMat);
 
@@ -520,6 +543,18 @@ export class NetworkScene {
 			i === null ? null : NetworkScene.ANCHORS[i % NetworkScene.ANCHORS.length] % this.nodes.length;
 	}
 
+	/** Light up core slab `i` (0 = bottom, matching LAYERS) and dim the rest; null clears. */
+	setLayer(i: number | null) {
+		this.layerIndex = i;
+	}
+
+	/** One element per LAYERS entry; positioned each frame beside its slab while the core is exploded. */
+	setLabels(els: HTMLElement[], occluders: Element[] = []) {
+		this.labels = els;
+		this.occluders = occluders;
+		this.lastStateKey = '';
+	}
+
 	dispose() {
 		this.stop();
 		window.removeEventListener('pointermove', this.onPointer);
@@ -562,9 +597,10 @@ export class NetworkScene {
 
 		if (this.reducedMotion) {
 			// Only re-render when scroll changes the state; nothing animates on its own.
-			const key = Object.values(this.state)
-				.map((v) => v.toFixed(3))
-				.join();
+			const key =
+				Object.values(this.state)
+					.map((v) => v.toFixed(3))
+					.join() + `|${this.layerIndex}`;
 			if (key === this.lastStateKey) return;
 			this.lastStateKey = key;
 			this.applyState(0, t);
@@ -602,11 +638,17 @@ export class NetworkScene {
 
 		this.cluster.rotation.y += dt * 0.035;
 
-		// core layers separate along Y
-		for (const slab of this.slabs) {
+		// core layers separate along Y; a hovered layer glows while the others step back
+		const ease = dt ? Math.min(1, dt * 8) : 1;
+		const anyLayer = this.layerIndex !== null;
+		this.slabs.forEach((slab, i) => {
+			slab.focus += ((this.layerIndex === i ? 1 : 0) - slab.focus) * ease;
 			slab.mesh.position.y = THREE.MathUtils.lerp(slab.compactY, slab.explodedY, s.explode);
 			slab.mesh.rotation.y += dt * 0.12 * (slab.compactY > 0 ? 1 : -1) * (0.3 + s.explode);
-		}
+			slab.mesh.scale.setScalar(1 + slab.focus * 0.08);
+			slab.body.emissiveIntensity = slab.focus * 0.5;
+			slab.edge.opacity = (anyLayer ? 0.3 : 0.8) + slab.focus * 0.7;
+		});
 
 		// satellites drift outwards and dim while the core is exploded
 		const ledPos = this.ledGeo.attributes.position as THREE.BufferAttribute;
@@ -668,8 +710,37 @@ export class NetworkScene {
 
 		this.fibreMat.opacity = 0.14 * (1 - s.explode * 0.5) + s.telemetry * 0.06;
 		// on portrait / square screens the cluster sits behind the copy, so keep it quieter
-		const minDim = this.width / this.height > 1.15 ? 0 : 0.45;
-		this.canvas.style.opacity = String(1 - Math.max(s.dim, minDim));
+		const wide = this.width / this.height > 1.15;
+		const minDim = wide ? 0 : 0.45;
+		const visible = 1 - Math.max(s.dim, minDim);
+		this.canvas.style.opacity = String(visible);
+		this.placeLabels(wide ? THREE.MathUtils.smoothstep(s.explode, 0.55, 0.95) * visible : 0);
+	}
+
+	/** Pin each layer label just right of its slab's silhouette, in screen space. */
+	private placeLabels(opacity: number) {
+		if (!this.labels.length) return;
+		this.camera.updateMatrixWorld();
+		this.camRight.setFromMatrixColumn(this.camera.matrixWorld, 0);
+		// read layout before writing styles; labels hide while a content card covers them
+		const rects = opacity > 0 ? this.occluders.map((o) => o.getBoundingClientRect()) : [];
+		const widths = opacity > 0 ? this.labels.map((l) => l.offsetWidth) : [];
+		this.slabs.forEach((slab, i) => {
+			const el = this.labels[i];
+			if (!el) return;
+			el.dataset.active = String(slab.focus > 0.5);
+			if (opacity === 0) return void (el.style.opacity = '0');
+			slab.mesh.getWorldPosition(this.tmp);
+			this.tmp.addScaledVector(this.camRight, slab.radius * slab.mesh.scale.x * 1.08);
+			this.tmp.project(this.camera);
+			const x = ((this.tmp.x + 1) / 2) * this.width;
+			const y = ((1 - this.tmp.y) / 2) * this.height;
+			const covered = rects.some(
+				(r) => y > r.top - 8 && y < r.bottom + 8 && x + widths[i] > r.left && x < r.right
+			);
+			el.style.opacity = covered ? '0' : opacity.toFixed(3);
+			el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translateY(-50%)`;
+		});
 	}
 
 	/** Drop to 1x pixel ratio if the device can't hold ~45fps. */

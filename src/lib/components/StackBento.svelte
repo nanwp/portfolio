@@ -1,5 +1,14 @@
 <script lang="ts">
 	import { LAYERS, stack, type StackGroup } from '$lib/data/stack';
+	import { sceneRef } from '$lib/stores/ui.svelte';
+
+	/** Light up a core slab in the 3D scene; `L3 · signals` → index 2. */
+	let activeLayer = $state<number | null>(null);
+	function highlight(i: number | null) {
+		activeLayer = i;
+		sceneRef.current?.setLayer(i);
+	}
+	const layerOf = (group: StackGroup) => Number(group.layer.match(/^L(\d)/)?.[1] ?? 0) - 1;
 
 	const accent: Record<StackGroup['accent'], { text: string; glow: string; dot: string }> = {
 		cyan: { text: 'text-cyan-glow', glow: 'rgba(0,240,255,0.14)', dot: 'bg-cyan-glow' },
@@ -56,9 +65,19 @@
 					class="mono mt-8 hidden space-y-px overflow-hidden rounded-xl border border-white/[0.06] text-[12px] lg:block"
 				>
 					{#each [...LAYERS].reverse() as layer, i}
-						<li class="flex items-center justify-between bg-white/[0.02] px-4 py-2.5">
-							<span class="text-ink-faint">L{LAYERS.length - i}</span>
-							<span class="text-ink">{layer}</span>
+						{@const idx = LAYERS.length - 1 - i}
+						<li
+							class="flex cursor-default items-center justify-between px-4 py-2.5 transition-colors {activeLayer ===
+							idx
+								? 'bg-cyan-glow/[0.07]'
+								: 'bg-white/[0.02]'}"
+							onpointerenter={() => highlight(idx)}
+							onpointerleave={() => highlight(null)}
+						>
+							<span class={activeLayer === idx ? 'text-cyan-glow' : 'text-ink-faint'}
+								>L{idx + 1}</span
+							>
+							<span class={activeLayer === idx ? 'text-white' : 'text-ink'}>{layer}</span>
 						</li>
 					{/each}
 				</ol>
@@ -77,6 +96,9 @@
 					use:tilt
 					class="bento panel edge-light group relative overflow-hidden p-6 {group.span}"
 					style="--glow: {a.glow}"
+					data-scene-occluder
+					onpointerenter={() => highlight(layerOf(group))}
+					onpointerleave={() => highlight(null)}
 				>
 					<div class="spotlight pointer-events-none absolute inset-0"></div>
 
