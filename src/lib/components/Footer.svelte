@@ -28,7 +28,7 @@
 </script>
 
 <footer id="contact" class="relative scroll-mt-24 border-t border-white/[0.06]">
-	<div class="container mx-auto grid gap-12 px-4 py-24 sm:px-6 lg:grid-cols-2">
+	<div class="container mx-auto grid gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2">
 		<div>
 			<p class="eyebrow mb-4">06 / Contact</p>
 			<h2 class="section-title text-white">Let's build something that stays up.</h2>

@@ -32,6 +32,14 @@
 <svelte:head>
 	<title>{blog.title} — Nanda Wijaya Putra</title>
 	<meta name="description" content={blog.excerpt} />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content={blog.title} />
+	<meta property="og:description" content={blog.excerpt} />
+	<meta property="og:image" content="https://nanwp.com/og.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://nanwp.com/og.png" />
 </svelte:head>
 
 <article class="relative">

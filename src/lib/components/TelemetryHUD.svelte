@@ -73,7 +73,7 @@
 	});
 </script>
 
-<section id="telemetry" data-stage="telemetry" class="relative scroll-mt-24 py-28 sm:py-36">
+<section id="telemetry" data-stage="telemetry" class="relative scroll-mt-24 py-20 sm:py-24">
 	<div class="container mx-auto px-4 sm:px-6">
 		<div class="max-w-xl">
 			<p class="eyebrow mb-4">02 / Observability &amp; Impact</p>
