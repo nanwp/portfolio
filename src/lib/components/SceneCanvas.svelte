@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { sceneRef } from '$lib/stores/ui.svelte';
 	import TopologyFallback from './TopologyFallback.svelte';
+	import { LAYERS } from '$lib/data/stack';
 
 	/** Sections carrying `data-stage="<name>"`, in scroll order. */
 	const ORDER = ['hero', 'architecture', 'telemetry', 'work', 'outro'] as const;
@@ -9,6 +10,7 @@
 	let canvas = $state<HTMLCanvasElement>();
 	let mode = $state<'pending' | 'webgl' | 'fallback'>('pending');
 	let ready = $state(false);
+	const labelEls: HTMLElement[] = [];
 
 	function supportsWebGL() {
 		try {
@@ -45,6 +47,7 @@
 			const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 			const lowPower = (navigator.hardwareConcurrency ?? 8) <= 4;
 			const scene = new NetworkScene(canvas, { reducedMotion, quality: lowPower ? 'low' : 'high' });
+			scene.setLabels(labelEls, [...document.querySelectorAll('[data-scene-occluder]')]);
 			sceneRef.current = scene;
 
 			const ctx = gsap.context(() => {
@@ -106,4 +109,50 @@
 		class="absolute inset-0"
 		style="background: radial-gradient(ellipse at 70% 40%, transparent 0%, rgba(7,7,9,0.35) 55%, rgba(7,7,9,0.9) 100%);"
 	></div>
+
+	{#if mode === 'webgl'}
+		<!-- layer callouts; NetworkScene moves them beside their slabs every frame -->
+		{#each LAYERS as layer, i}
+			<div bind:this={labelEls[i]} class="layer-label mono" style="opacity: 0">
+				<span class="layer-tick"></span>
+				<span class="text-ink-faint">L{i + 1}</span>
+				<span>{layer}</span>
+			</div>
+		{/each}
+	{/if}
 </div>
+
+<style>
+	.layer-label {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		white-space: nowrap;
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		color: var(--ink-muted);
+		will-change: transform, opacity;
+		transition:
+			color 0.25s,
+			opacity 0.2s;
+	}
+	.layer-tick {
+		width: 1.75rem;
+		height: 1px;
+		background: rgba(255, 255, 255, 0.25);
+		transition:
+			background 0.25s,
+			width 0.25s;
+	}
+	.layer-label:global([data-active='true']) {
+		color: var(--cyan);
+	}
+	.layer-label:global([data-active='true']) .layer-tick {
+		width: 2.75rem;
+		background: var(--cyan);
+		box-shadow: 0 0 8px var(--cyan);
+	}
+</style>
