@@ -35,6 +35,32 @@
 		{ name: 'publish payment.settled', svc: 'nats', start: 84, dur: 8 }
 	];
 
+	/** Counts a single-number metric up from 0 the first time it scrolls into view. SSR keeps the final value. */
+	function countUp(node: HTMLElement) {
+		const final = node.textContent?.trim() ?? '';
+		const nums = final.match(/\d+/g);
+		if (nums?.length !== 1 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		const target = Number(nums[0]);
+		const render = (n: number) => (node.textContent = final.replace(/\d+/, String(n)));
+		render(0);
+		const io = new IntersectionObserver(
+			([entry]) => {
+				if (!entry.isIntersecting) return;
+				io.disconnect();
+				const t0 = performance.now();
+				const step = (now: number) => {
+					const k = Math.min(1, (now - t0) / 1100);
+					render(Math.round(target * (1 - (1 - k) ** 3)));
+					if (k < 1) requestAnimationFrame(step);
+				};
+				requestAnimationFrame(step);
+			},
+			{ threshold: 0.6 }
+		);
+		io.observe(node);
+		return { destroy: () => io.disconnect() };
+	}
+
 	function stamp() {
 		return new Date().toISOString().slice(11, 23);
 	}
@@ -86,8 +112,13 @@
 
 		<dl class="mt-10 grid grid-cols-2 gap-3 lg:max-w-xl">
 			{#each impact as m}
-				<div class="panel p-5">
-					<dd class="mono text-2xl font-semibold tracking-tight text-white sm:text-[1.7rem]">
+				<div class="panel p-5 {m.featured ? 'edge-light col-span-2 sm:col-span-1 sm:py-7' : ''}">
+					<dd
+						use:countUp
+						class="mono font-semibold tabular-nums tracking-tight {m.featured
+							? 'text-3xl text-cyan-glow sm:text-[2.6rem]'
+							: 'text-2xl text-white sm:text-[1.7rem]'}"
+					>
 						{m.value}
 					</dd>
 					<dt class="mt-1 text-sm text-ink">{m.label}</dt>

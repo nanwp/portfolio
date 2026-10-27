@@ -53,7 +53,7 @@
 				</p>
 
 				<ol
-					class="mono mt-8 space-y-px overflow-hidden rounded-xl border border-white/[0.06] text-[12px]"
+					class="mono mt-8 hidden space-y-px overflow-hidden rounded-xl border border-white/[0.06] text-[12px] lg:block"
 				>
 					{#each [...LAYERS].reverse() as layer, i}
 						<li class="flex items-center justify-between bg-white/[0.02] px-4 py-2.5">

@@ -38,20 +38,21 @@
 			<h1
 				class="metal-text text-[clamp(2.5rem,6.2vw,4.75rem)] font-semibold leading-[1.02] tracking-[-0.045em]"
 			>
-				Architecting resilient systems &amp; scalable cloud infrastructure.
+				Architecting resilient systems &amp; scalable cloud <span class="hero-accent"
+					>infrastructure.</span
+				>
 			</h1>
 
 			<p class="mt-7 max-w-xl text-[1.0625rem] leading-relaxed text-ink-muted">
-				I'm <span class="text-ink">{profile.name}</span>, a software engineer focused on
-				<span class="text-ink">distributed systems, payments &amp; observability</span>. For 3 years
-				I've built <span class="text-ink">Go</span> microservices for payment, billing and high-traffic
-				consumer platforms on gRPC, NATS and Kafka, shipped to AWS and Kubernetes, with 100% unit-test
-				coverage on the services I own.
+				I'm <span class="text-ink">{profile.name}</span>, a backend engineer building
+				<span class="text-ink">Go</span> microservices for
+				<span class="text-ink">payments, billing &amp; high-traffic platforms</span>: gRPC, NATS and
+				Kafka on AWS and Kubernetes, with observability built in from day one.
 			</p>
 
-			<div class="mt-10 flex flex-wrap items-center gap-3">
-				<a href="#architecture" class="btn-glow">
-					Explore Architecture
+			<div class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+				<a href="#work" class="btn-glow justify-center">
+					View my work
 					<svg
 						class="h-4 w-4"
 						viewBox="0 0 24 24"
@@ -62,7 +63,7 @@
 						<path d="M12 5v14m0 0 6-6m-6 6-6-6" stroke-linecap="round" stroke-linejoin="round" />
 					</svg>
 				</a>
-				<a href={profile.resumeUrl} class="btn-mono" download>
+				<a href={profile.resumeUrl} class="btn-mono justify-center" download>
 					<span class="text-cyan-glow">$</span> cat resume.pdf
 					<svg
 						class="h-3.5 w-3.5 text-ink-muted"

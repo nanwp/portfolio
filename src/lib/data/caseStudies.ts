@@ -243,8 +243,13 @@ export const caseStudies: CaseStudy[] = [
 ];
 
 export const impact = [
-	{ value: '5s→100ms', label: 'ERP API latency', source: 'Laravel → Go rewrite' },
-	{ value: '−95%', label: 'student transfer time', source: '2–3 days → 1–2 hours' },
+	{ value: '5s→100ms', label: 'ERP API latency', source: 'Laravel → Go rewrite', featured: true },
+	{
+		value: '−95%',
+		label: 'student transfer time',
+		source: '2–3 days → 1–2 hours',
+		featured: true
+	},
 	{ value: '−60%', label: 'deployment time', source: 'GitLab CI optimisation' },
 	{ value: '10', label: 'payment microservices', source: 'Payment-Finance squad' },
 	{ value: '100%', label: 'unit-test coverage', source: 'on every service I own' },

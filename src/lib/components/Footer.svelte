@@ -4,6 +4,17 @@
 	import { profile } from '$lib/data/profile';
 
 	let time = $state('--:--:--');
+	let copied = $state(false);
+
+	async function copyEmail() {
+		try {
+			await navigator.clipboard.writeText(profile.email);
+		} catch {
+			return void (location.href = `mailto:${profile.email}`);
+		}
+		copied = true;
+		setTimeout(() => (copied = false), 1800);
+	}
 
 	onMount(() => {
 		const fmt = new Intl.DateTimeFormat('en-GB', {
@@ -51,7 +62,18 @@
 			</div>
 
 			<div class="mt-6 flex flex-wrap gap-3">
-				<a href="mailto:{profile.email}" class="btn-glow">{profile.email}</a>
+				<span class="inline-flex">
+					<a href="mailto:{profile.email}" class="btn-glow !rounded-r-none">{profile.email}</a>
+					<button
+						type="button"
+						onclick={copyEmail}
+						class="btn-mono !min-w-[5.75rem] !justify-center !rounded-l-none !border-l-0 !px-3 text-xs"
+						aria-label="Copy email address"
+					>
+						{copied ? 'copied ✓' : 'copy'}
+					</button>
+				</span>
+				<span class="sr-only" aria-live="polite">{copied ? 'Email copied to clipboard' : ''}</span>
 				<a href={profile.resumeUrl} class="btn-mono" download>Download CV (PDF) ↓</a>
 			</div>
 

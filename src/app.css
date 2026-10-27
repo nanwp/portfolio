@@ -164,6 +164,14 @@ body {
 	-webkit-text-fill-color: transparent;
 }
 
+/* Last word of the hero headline: metal fading into the brand cyan instead of grey. */
+.hero-accent {
+	background: linear-gradient(90deg, #c9ccd4 0%, #00f0ff 75%, #10b981 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
 .gradient-text {
 	background: linear-gradient(90deg, #e7e9ee, #00f0ff 60%, #10b981);
 	-webkit-background-clip: text;
@@ -333,20 +341,21 @@ kbd {
 }
 
 /* ── Scroll reveal ── */
-.reveal {
+/* Hidden only once JS is known to run (app.html adds .js), so content never stays invisible without it. */
+.js .reveal {
 	opacity: 0;
 	transform: translateY(20px);
 	transition:
 		opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
 		transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.reveal.visible {
+.js .reveal.visible {
 	opacity: 1;
 	transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.reveal {
+	.js .reveal {
 		opacity: 1;
 		transform: none;
 		transition: none;
