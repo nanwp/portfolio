@@ -40,7 +40,7 @@
 	}
 </script>
 
-<section id="architecture" data-stage="architecture" class="relative scroll-mt-24 py-28 sm:py-36">
+<section id="architecture" data-stage="architecture" class="relative scroll-mt-24 py-20 sm:py-24">
 	<div class="container mx-auto px-4 sm:px-6">
 		<div class="grid gap-10 lg:grid-cols-12">
 			<div class="lg:col-span-5">
@@ -66,7 +66,7 @@
 		</div>
 
 		<!-- spacer so the exploded core has room on large screens -->
-		<div class="hidden h-[28vh] lg:block"></div>
+		<div class="hidden h-[16vh] lg:block"></div>
 
 		<div
 			class="grid auto-rows-[minmax(10rem,auto)] grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-6"

@@ -37,7 +37,12 @@
 	<meta property="og:title" content="{profile.name} — {profile.title}" />
 	<meta property="og:description" content={description} />
 	<meta property="og:url" content="https://nanwp.com" />
-	<meta name="twitter:card" content="summary" />
+	<meta property="og:image" content="https://nanwp.com/og.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="{profile.name} — {profile.title}" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://nanwp.com/og.png" />
 	{@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
@@ -49,7 +54,7 @@
 <CaseStudies />
 
 <!-- From here on the scene recedes (outro stage) so long-form content stays readable. -->
-<section id="experience" data-stage="outro" class="relative scroll-mt-24 py-28">
+<section id="experience" data-stage="outro" class="relative scroll-mt-24 py-20 sm:py-24">
 	<div class="container mx-auto px-4 sm:px-6">
 		<div class="grid gap-12 lg:grid-cols-12">
 			<div class="lg:col-span-4">
@@ -94,7 +99,7 @@
 </section>
 
 {#if data.recentBlogs.length}
-	<section id="writings" class="relative scroll-mt-24 py-24">
+	<section id="writings" class="relative scroll-mt-24 py-20">
 		<div class="container mx-auto px-4 sm:px-6">
 			<div class="mb-10 flex items-end justify-between gap-4">
 				<div>

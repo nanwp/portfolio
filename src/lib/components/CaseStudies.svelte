@@ -21,7 +21,7 @@
 	}
 </script>
 
-<section id="work" data-stage="work" class="relative scroll-mt-24 py-28 sm:py-36">
+<section id="work" data-stage="work" class="relative scroll-mt-24 py-20 sm:py-24">
 	<div class="container mx-auto px-4 sm:px-6">
 		<div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
 			<div class="max-w-xl">

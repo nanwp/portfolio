@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { stack } from '$lib/data/stack';
 	import { profile } from '$lib/data/profile';
@@ -13,6 +13,7 @@
 	let busy = $state(false);
 	let history: string[] = [];
 	let cursor = -1;
+	let touched = false;
 	let screen = $state<HTMLElement>();
 	let input = $state<HTMLInputElement>();
 
@@ -102,15 +103,8 @@
 			clear: { help: 'clear the screen', run: () => void (lines = []) }
 		};
 
-	async function submit(e: SubmitEvent) {
-		e.preventDefault();
-		const raw = value.trim();
-		value = '';
-		if (!raw || busy) return;
-		history.unshift(raw);
-		cursor = -1;
+	async function exec(raw: string) {
 		print(raw, 'in');
-
 		const [name, ...args] = raw.split(/\s+/);
 		const cmd = commands[name.toLowerCase()];
 		busy = true;
@@ -121,10 +115,59 @@
 
 		await tick();
 		screen?.scrollTo({ top: screen.scrollHeight });
+	}
+
+	async function submit(e: SubmitEvent) {
+		e.preventDefault();
+		touched = true;
+		const raw = value.trim();
+		value = '';
+		if (!raw || busy) return;
+		history.unshift(raw);
+		cursor = -1;
+		await exec(raw);
 		input?.focus();
 	}
 
+	// Demo run the first time the shell scrolls into view, so it never sits empty.
+	// Stops as soon as the visitor interacts; never takes focus.
+	const DEMO = ['whoami'];
+	const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+	async function autoplay() {
+		const instant = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		await sleep(instant ? 0 : 400);
+		for (const cmd of DEMO) {
+			if (touched) return;
+			if (!instant) {
+				for (const ch of cmd) {
+					if (touched) return void (value = '');
+					value += ch;
+					await sleep(70);
+				}
+				await sleep(250);
+			}
+			value = '';
+			await exec(cmd);
+		}
+		if (!touched) print('type `help` for more — try `ping nanwp.com` or `cv`');
+	}
+
+	onMount(() => {
+		const io = new IntersectionObserver(
+			([entry]) => {
+				if (!entry.isIntersecting) return;
+				io.disconnect();
+				autoplay();
+			},
+			{ threshold: 0.5 }
+		);
+		if (screen) io.observe(screen);
+		return () => io.disconnect();
+	});
+
 	function onKey(e: KeyboardEvent) {
+		touched = true;
 		if (e.key === 'ArrowUp' && history.length) {
 			e.preventDefault();
 			cursor = Math.min(cursor + 1, history.length - 1);
@@ -156,7 +199,7 @@
 	<div bind:this={screen} class="h-56 overflow-y-auto px-4 py-3" onclick={() => input?.focus()}>
 		{#each lines as l}
 			<p class="whitespace-pre-wrap break-words {color[l.kind]}">
-				{#if l.kind === 'in'}<span class="text-cyan-glow">❯ </span>{/if}{l.text}
+				{#if l.kind === 'in'}<span class="text-cyan-glow">❯&nbsp;</span>{/if}{l.text}
 			</p>
 		{/each}
 
@@ -166,6 +209,7 @@
 				bind:this={input}
 				bind:value
 				onkeydown={onKey}
+				onfocus={() => (touched = true)}
 				disabled={busy}
 				aria-label="Terminal input"
 				autocomplete="off"
