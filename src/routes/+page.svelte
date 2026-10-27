@@ -110,7 +110,7 @@
 			</div>
 			<div class="grid grid-cols-1 gap-3 md:grid-cols-3">
 				{#each data.recentBlogs as blog}
-					<ScrollReveal>
+					<ScrollReveal class="h-full">
 						<BlogCard {blog} />
 					</ScrollReveal>
 				{/each}

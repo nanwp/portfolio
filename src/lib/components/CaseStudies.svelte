@@ -97,21 +97,32 @@
 		</div>
 
 		{#if oss.length}
-			<div class="mt-3 grid gap-3 md:grid-cols-2">
+			<div class="mt-3 grid gap-3">
 				{#each oss as p}
 					<a
 						href={p.url}
 						target="_blank"
 						rel="noopener"
-						class="panel flex items-center justify-between gap-4 px-5 py-4 no-underline transition-colors hover:border-white/[0.14]"
+						class="panel group flex flex-col gap-4 px-5 py-5 no-underline transition-colors hover:border-white/[0.14] sm:flex-row sm:items-center sm:justify-between sm:px-6"
 					>
-						<span>
-							<span class="mono text-[10.5px] text-ink-faint">open source</span>
-							<span class="mt-0.5 block font-medium text-white"
-								>{p.name} <span class="text-ink-faint">— {p.subtitle}</span></span
+						<span class="min-w-0">
+							<span class="mono text-[10.5px] text-ink-faint">open source · {p.subtitle}</span>
+							<span class="mt-1 block text-lg font-semibold tracking-tight text-white"
+								>{p.name}</span
+							>
+							<span class="mt-1.5 block max-w-2xl text-sm leading-relaxed text-ink-muted"
+								>{p.description}</span
 							>
 						</span>
-						<span class="mono text-xs text-ink-muted">github ↗</span>
+						<span class="flex shrink-0 flex-wrap items-center gap-1.5">
+							{#each p.tags.filter((t) => t !== 'Open Source') as tag}
+								<span class="tag">{tag}</span>
+							{/each}
+							<span
+								class="mono ml-1 rounded-md border border-white/10 px-2 py-1 text-[10.5px] text-ink-muted transition-colors group-hover:border-cyan-glow/40 group-hover:text-cyan-glow"
+								>github ↗</span
+							>
+						</span>
 					</a>
 				{/each}
 			</div>
