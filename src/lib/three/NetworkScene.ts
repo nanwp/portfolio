@@ -220,7 +220,7 @@ export class NetworkScene {
 	private readonly quality: 'high' | 'low';
 
 	/** Node indices that anchor the project case studies in the "work" stage. */
-	static readonly ANCHORS = [2, 9, 17, 24, 28];
+	static readonly ANCHORS = [2, 9, 17, 24, 28, 5, 13];
 
 	constructor(
 		private canvas: HTMLCanvasElement,

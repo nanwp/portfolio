@@ -49,8 +49,13 @@
 				>
 					<div class="flex items-start justify-between gap-4">
 						<div>
-							<p class="mono text-[10.5px] text-ink-faint">
-								node/{String(i + 1).padStart(2, '0')} · {cs.org} · {cs.period}
+							<p class="mono flex flex-wrap items-center gap-x-2 text-[10.5px] text-ink-faint">
+								<span>node/{String(i + 1).padStart(2, '0')} · {cs.org} · {cs.period}</span>
+								{#if cs.links?.length}
+									<span class="flex items-center gap-1.5 text-emerald-300"
+										><span class="status-dot"></span>live</span
+									>
+								{/if}
 							</p>
 							<h3
 								class="mt-1.5 font-semibold tracking-tight text-white {cs.featured
@@ -196,15 +201,19 @@
 				{#each selected.tags as tag}
 					<span class="tag">{tag}</span>
 				{/each}
-				{#each selected.links ?? [] as l}
-					<a
-						href={l.href}
-						class="btn-mono ml-auto !h-9 text-xs"
-						target={l.href.startsWith('http') ? '_blank' : undefined}
-						rel="noopener">{l.label} ↗</a
-					>
-				{/each}
 			</div>
+			{#if selected.links?.length}
+				<div class="mt-4 flex flex-wrap gap-2">
+					{#each selected.links as l}
+						<a
+							href={l.href}
+							class="btn-mono !h-9 text-xs"
+							target={l.href.startsWith('http') ? '_blank' : undefined}
+							rel="noopener">{l.label} ↗</a
+						>
+					{/each}
+				</div>
+			{/if}
 		</article>
 	{/if}
 </dialog>

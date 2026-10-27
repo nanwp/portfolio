@@ -1,4 +1,5 @@
-// Every metric here comes from the CV / experiences.json — keep it that way: no invented numbers.
+// Every metric here comes from the CV / experiences.json, or is counted straight from the project's
+// own repository (tests, routes, tables) — keep it that way: no invented numbers.
 
 export type DiagramKind = 'client' | 'service' | 'broker' | 'store' | 'infra' | 'obs';
 
@@ -69,6 +70,65 @@ export const caseStudies: CaseStudy[] = [
 			'Silent NATS worker failures and process spikes now surface before they reach production users.',
 			'On-call incidents (failed payment-request creation, missing price data, discount-calculation bugs) root-caused via logs, metrics and traces, and fixed with regression tests.',
 			'100% unit-test coverage on owned services; payment-domain knowledge spread through code review for 3 peers.'
+		]
+	},
+	{
+		id: 'employee-loan',
+		featured: true,
+		title: 'Employee Loan Platform (Koperasi SaaS)',
+		org: 'independent build',
+		period: '2026',
+		summary:
+			'Multi-tenant lending platform for an employee cooperative: members simulate and apply for loans, the employer and the cooperative approve in two tiers, and instalments are collected through payroll deduction.',
+		metrics: [
+			{ value: '534', label: 'Go tests on real Postgres' },
+			{ value: '14', label: 'tables isolated by RLS' },
+			{ value: '90', label: 'REST routes, role-tested' }
+		],
+		tags: [
+			'Go',
+			'PostgreSQL RLS',
+			'Vue 3',
+			'TypeScript',
+			'Multi-tenant',
+			'S3',
+			'Prometheus',
+			'Playwright'
+		],
+		diagram: {
+			nodes: [
+				{ id: 'member', label: 'members', x: 30, y: 45, kind: 'client' },
+				{ id: 'admin', label: 'admins', x: 30, y: 115, kind: 'client' },
+				{ id: 'spa', label: 'vue spa', x: 115, y: 80, kind: 'client' },
+				{ id: 'rest', label: 'go-rest', x: 200, y: 50, kind: 'service' },
+				{ id: 'worker', label: 'worker', x: 200, y: 125, kind: 'service' },
+				{ id: 'pg', label: 'Postgres+RLS', x: 290, y: 90, kind: 'store' },
+				{ id: 's3', label: 'S3 / MinIO', x: 290, y: 40, kind: 'infra' },
+				{ id: 'prom', label: 'Prometheus', x: 290, y: 140, kind: 'obs' }
+			],
+			edges: [
+				['member', 'spa'],
+				['admin', 'spa'],
+				['spa', 'rest'],
+				['rest', 's3'],
+				['rest', 'pg'],
+				['worker', 'pg'],
+				['worker', 'prom']
+			]
+		},
+		problem:
+			"Employees borrowing straight from their employer is untracked and hard to collect. A cooperative needed one source of truth for loans across many companies: who owes what, limits, instalments, and where the money came from, with zero chance of one company seeing another's data.",
+		approach: [
+			'Tenant isolation enforced by Postgres row-level security, not by discipline: the app connects as a restricted role and repositories only accept a transaction scoped with the tenant id.',
+			'A pure loan-math package shared by the simulation endpoint and disbursement, so the schedule a member is shown is exactly the contract that gets stored; money is integer rupiah.',
+			'Two-tier approval (employer, then cooperative), funding-source ledger with row locks on disbursement, payroll-deduction billing with invoices, and savings recorded at disbursement.',
+			'Modular Go monolith with use-case interfaces between modules, a route table so the role matrix is testable as data, and a separate worker for reminders, email and cache checks.',
+			'Operations built in: S3 file storage behind one validated interface, daily pg_dump backups to S3 with a guarded restore script, Prometheus metrics and fail2ban-style login rate limiting.'
+		],
+		outcome: [
+			'534 Go tests run against a real Postgres, including an RLS suite proving tenant A can never read or write tenant B.',
+			'Simulation-equals-contract guarded end to end: simulate → apply → two approvals → disburse produces the identical schedule.',
+			'Vue 3 + TypeScript front end with 52 component specs and Playwright journeys; CI runs backend, frontend and e2e in parallel.'
 		]
 	},
 	{
@@ -151,6 +211,61 @@ export const caseStudies: CaseStudy[] = [
 		outcome: [
 			'Response time cut from ~5s to ~100ms.',
 			'A traced, containerised service that scales with outlet count.'
+		]
+	},
+	{
+		id: 'majelis',
+		featured: true,
+		title: "Majelis Maqbul Qur'ani: Member App & CMS",
+		org: "Yayasan Majelis Maqbul Qur'ani",
+		period: '2026',
+		summary:
+			'End-to-end digital platform for an Islamic foundation: a Flutter member app, a Vue admin CMS and the Go API behind both, covering study videos, programmes, quizzes, events, announcements and push notifications. Live on the web and Google Play.',
+		metrics: [
+			{ value: '3', label: 'apps: API, admin web, mobile' },
+			{ value: '83', label: 'API endpoints' },
+			{ value: 'v1.3', label: 'mobile release (build 9)' }
+		],
+		tags: ['Go', 'Gin', 'PostgreSQL', 'Flutter', 'Vue 3', 'AWS S3', 'FCM', 'OpenTelemetry'],
+		diagram: {
+			nodes: [
+				{ id: 'app', label: 'flutter app', x: 30, y: 50, kind: 'client' },
+				{ id: 'cms', label: 'vue admin', x: 30, y: 115, kind: 'client' },
+				{ id: 'api', label: 'go api', x: 130, y: 85, kind: 'service' },
+				{ id: 'pg', label: 'Postgres', x: 240, y: 35, kind: 'store' },
+				{ id: 's3', label: 'S3 + CDN', x: 240, y: 70, kind: 'infra' },
+				{ id: 'fcm', label: 'FCM / WA', x: 240, y: 105, kind: 'broker' },
+				{ id: 'otel', label: 'OTel metrics', x: 240, y: 140, kind: 'obs' }
+			],
+			edges: [
+				['app', 'api'],
+				['cms', 'api'],
+				['api', 'pg'],
+				['api', 's3'],
+				['api', 'fcm'],
+				['api', 'otel']
+			]
+		},
+		problem:
+			"The foundation's members got videos, programme schedules and announcements through scattered chat groups. They needed one official app, and the staff needed to publish content without a developer.",
+		approach: [
+			'Go API on Gin in clean architecture (handler → use case → repository) with JWT auth, serving both the mobile app and the admin CMS.',
+			'Media goes straight from the browser to S3 through presigned URLs and is served via CloudFront, so large videos and PDFs never pass through the API.',
+			'Push notifications with Firebase Cloud Messaging (multicast, device-token lifecycle tied to login/logout) and deep links into announcements and programmes; WhatsApp delivers login codes on sign-up.',
+			'Flutter app with video likes, view counts and watch-later, quizzes, an event calendar, an inbox with infinite scroll, and an in-app PDF reader for infographics.',
+			'OpenTelemetry instrumentation on the Gin router exported to Prometheus.'
+		],
+		outcome: [
+			'Live in production: the site at majelismaqbulqurani.org and the Android app on Google Play, now at v1.3 (build 9), with the API and admin CMS shipped alongside.',
+			'Staff manage videos, programmes, quizzes, events, gallery, announcements and infographics from the CMS without touching code.',
+			'Members get new content as a push notification that opens the right screen directly.'
+		],
+		links: [
+			{ label: 'Website', href: 'https://majelismaqbulqurani.org/' },
+			{
+				label: 'Google Play',
+				href: 'https://play.google.com/store/apps/details?id=com.majelismaqbulqurani.app'
+			}
 		]
 	},
 	{
